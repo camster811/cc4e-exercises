@@ -1,36 +1,5 @@
-// You will extend the previous assignment with list_add() and list_find() and add a function called list_delete() that will find and remove the node containing the integer value if it is in the list.
-
-
-void list_add(lst, value)
-    struct list *lst;
-    int value;
-{
-    /* Append the value to the end of the linked list. */
-}
-
-void list_remove(lst, value)
-    struct list *lst;
-    int value;
-{
-    /* Remove the value from the linked list. */
-}
-
-/*Dump:
-  10
-  20
-  30
-
-Dump:
-  20
-  30
-
-Dump:
-  20
-
-Dump:
-  20
-  40 */
-
+// You will extend the previous assignment with list_add() and list_find() and add a function called list_delete()
+// that will find and remove the node containing the integer value if it is in the list.
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -83,3 +52,60 @@ void list_dump(lst)
         printf("  %d\n", cur->value);
     }
 }
+
+void list_add(lst, value)
+    struct list *lst;
+    int value;
+{
+    struct lnode *new = (struct lnode *) malloc(sizeof(struct lnode));
+
+    if (lst->tail != NULL) {
+        lst->tail->next = new;
+    }
+    new->value = value;
+    new->next = NULL;
+    lst->tail = new;
+
+    if (lst->head == NULL) {
+        lst->head = new;
+    }
+}
+
+void list_remove(lst, value)
+    struct list *lst;
+    int value;
+{
+    struct lnode *prev;
+    struct lnode *curr;
+
+    for (curr = lst->head; curr != NULL; prev = curr, curr = curr->next) {
+        if (curr->value == value) {
+            if (curr == lst->head) { // val to delete is at start
+                lst->head = curr->next;
+            }
+            else if (curr == lst->tail) { // val to delete at end
+                prev->next = NULL;
+                lst->tail = prev;
+            }
+            else { // val to delete in middle
+                prev->next = curr->next;
+            }
+        }
+    }
+}
+
+/*Dump:
+  10
+  20
+  30
+
+Dump:
+  20
+  30
+
+Dump:
+  20
+
+Dump:
+  20
+  40 */
