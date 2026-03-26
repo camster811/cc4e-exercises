@@ -1,32 +1,5 @@
-// You will write a function list_add() to append an integer to the end of a linked list. You will also write a function called list_find() that will return the list node containing the integer value or NULL if the value is not in the list.
-
-void list_add(lst, value)
-    struct list *lst;
-    int value;
-{
-    /* Append the value to the end of the linked list. */
-}
-
-struct lnode * list_find(lst, value)
-    struct list *lst;
-    int value;
-{
-    return NULL;
-}
-
-/*Dump:
-  10
-  20
-  30
-Did not find 42
-Found 30
-
-Dump:
-  10
-  20
-  30
-  40 */
-
+// You will write a function list_add() to append an integer to the end of a linked list.
+// You will also write a function called list_find() that will return the list node containing the integer value or NULL if the value is not in the list.
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -85,3 +58,47 @@ void list_dump(lst)
         printf("  %d\n", cur->value);
     }
 }
+
+void list_add(lst, value)
+    struct list *lst;
+    int value;
+{
+    struct lnode *new = (struct lnode *) malloc(sizeof(struct lnode));
+
+    if (lst->tail != NULL) {
+        lst->tail->next = new;
+    }
+    new->value = value;
+    new->next = NULL;
+    lst->tail = new;
+
+    if (lst->head == NULL) {
+        lst->head = new;
+    }
+}
+
+struct lnode * list_find(lst, value)
+    struct list *lst;
+    int value;
+{
+    struct lnode *curr;
+    for (curr = lst->head; curr != NULL; curr = curr->next) {
+        if (curr->value == value) {
+            return curr;
+        }
+    }
+    return NULL;
+}
+
+/*Dump:
+  10
+  20
+  30
+Did not find 42
+Found 30
+
+Dump:
+  10
+  20
+  30
+  40 */
