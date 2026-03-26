@@ -1,19 +1,6 @@
-// You will write two function dealing with a simple strcuture as shown below. The first function will dump the internal values of the simpledate structure. The second will compute the day of the year similar to the sample code in Chapter 6 of the K&R book.
-
-int day_of_year(pd) /* set day of year from month, day */
-struct simpledate *pd;
-{
-    return 42;
-}
-
-void dump_date(pd) /* print date from year, month, day */
-struct simpledate *pd;
-{
-    /* The date should be in the following format - note that */
-    /* The month and day are always two digits with leading zeros */
-    printf("2023/03/07\n");
-}
-
+// You will write two function dealing with a simple strcuture as shown below.
+// The first function will dump the internal values of the simpledate structure.
+// The second will compute the day of the year similar to the sample code in Chapter 6 of the K&R book.
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -27,7 +14,6 @@ static int day_tab[2][13] = {
   {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
   {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
 };
-
 
 main() {
     void dump_date();
@@ -53,10 +39,36 @@ main() {
     printf("Day of year %d\n", day_of_year(&sd));
 }
 
-/*Playing with structures
-2023/02/11
-Day of year 42
-2023/09/15
-Day of year 258
-2024/09/15
-Day of year 259 */
+int day_of_year(pd) /* set day of year from month, day */
+struct simpledate *pd;
+{
+    int i, leap;
+    int day = pd->day;
+
+    leap = pd->year%4 == 0 && pd->year%100 != 0 || pd->year == 0;
+    for (i = 0; i < pd->month; i++) {
+        day += day_tab[leap][i];
+    }
+    return (day);
+}
+
+void dump_date(pd) /* print date from year, month, day */
+struct simpledate *pd;
+{
+    /* The date should be in the following format - note that */
+    /* The month and day are always two digits with leading zeros */
+    int year = pd->year;
+    int month = pd->month;
+    int day = pd->day;
+    printf("%d/%d/%d\n", year, month, day);
+}
+
+/*
+ * Playing with structures
+ * 2023/02/11
+ * Day of year 42
+ * 2023/09/15
+ * Day of year 258
+ * 2024/09/15
+ * Day of year 259
+*/
